@@ -1,12 +1,14 @@
 {
-  "name": "datadog-cro",
+  "name": "hrblock-grokbot",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "scan:residue": "node scripts/scan-residue.mjs",
+    "scan:emdash": "node scripts/scan-emdash.mjs"
   },
   "dependencies": {
     "geist": "^1.7.2",

@@ -17,12 +17,12 @@ function isLight(hex: string) {
 
 function Box({
   bot,
-  chief = false,
+  lead = false,
 }: {
   bot: FleetBot;
-  chief?: boolean;
+  lead?: boolean;
 }) {
-  const className = chief ? "org-box is-chief" : "org-box";
+  const className = lead ? "org-box is-chief" : "org-box";
   const body = (
     <>
       <span
@@ -36,7 +36,9 @@ function Box({
         {initials(bot)}
       </span>
       <span className="org-name">{bot.name}</span>
-      <span className="org-blurb">{bot.blurb}</span>
+      <span className="org-blurb">
+        {bot.blurb} {bot.computer}.
+      </span>
     </>
   );
 
@@ -52,23 +54,22 @@ function Box({
 }
 
 export function RosterChart() {
-  const seat = FLEET.find((item) => item.seat);
-  const agents = FLEET.filter((item) => !item.seat);
+  const lead = FLEET.find((item) => item.lead);
+  const agents = FLEET.filter((item) => !item.lead);
 
-  if (!seat) return null;
+  if (!lead) return null;
 
   return (
     <section id="roster" className="roster">
-      <h2>A background team for every sales rep</h2>
+      <h2>A fleet of software agents with their own computers</h2>
       <p className="section-lede">
-        The work itself is the trigger. A call starts, an email lands, or an
-        account enters the list — and the right agent picks it up. They keep
-        working after the laptop closes. Drafts stay drafts until the rep sends.
+        Each named agent has a separate computer and a narrow software task.
+        The examples are illustrative and leave work ready for review.
       </p>
 
       <div className="org" role="tree">
         <div className="org-top">
-          <Box bot={seat} chief />
+          <Box bot={lead} lead />
         </div>
         <div className="org-branch">
           <div className="org-connect" aria-hidden>

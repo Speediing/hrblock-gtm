@@ -7,14 +7,17 @@ export function SiteNav() {
         <BrandLockup size="sm" />
       </a>
       <nav className="header-actions" aria-label="On this page">
+        <a className="text-button" href="#roster">
+          Fleet
+        </a>
         <a className="text-button" href="#jobs">
-          Use cases
+          Workflows
         </a>
         <a className="text-button" href="#compare">
-          Grok Bot comparison
+          Compare
         </a>
         <a className="text-button" href="#testimonials">
-          Testimonials
+          Sources
         </a>
       </nav>
     </header>

@@ -1,6 +1,6 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { DemoMessage, DemoThread, Participant } from "@/data/types";
-import { DEFAULT_ACCOUNT, swapAccount } from "@/lib/account";
+import { DEFAULT_ACCOUNT } from "@/lib/account";
 
 function participantMap(thread: DemoThread): Record<string, Participant> {
   return Object.fromEntries(thread.participants.map((p) => [p.id, p]));
@@ -21,18 +21,13 @@ const SETTLE_MS = 500;
 
 export function useDemoPlayback(thread: DemoThread) {
   const people = useMemo(() => participantMap(thread), [thread]);
-  const [account, setAccount] = useState(DEFAULT_ACCOUNT);
-  const [draftAccount, setDraftAccount] = useState(DEFAULT_ACCOUNT);
   const [visibleCount, setVisibleCount] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [typingFrom, setTypingFrom] = useState<string | null>(null);
   const [sentDrafts, setSentDrafts] = useState<Record<string, boolean>>({});
   const [inView, setInView] = useState(false);
 
-  const liveThread = useMemo(
-    () => swapAccount(thread, account),
-    [thread, account],
-  );
+  const liveThread = thread;
   const messages = liveThread.messages;
   const done = visibleCount >= messages.length && !typingFrom;
   const visible = messages.slice(0, visibleCount);
@@ -88,14 +83,6 @@ export function useDemoPlayback(thread: DemoThread) {
     setPlaying(true);
   }
 
-  function applyAccount(event: FormEvent) {
-    event.preventDefault();
-    const next = draftAccount.trim() || DEFAULT_ACCOUNT;
-    setAccount(next);
-    setDraftAccount(next);
-    replay();
-  }
-
   function sendDraft(id: string) {
     setSentDrafts((prev) => ({ ...prev, [id]: true }));
   }
@@ -114,14 +101,11 @@ export function useDemoPlayback(thread: DemoThread) {
     done,
     typingFrom,
     sentDrafts,
-    account,
-    draftAccount,
-    setDraftAccount,
+    account: DEFAULT_ACCOUNT,
     setPlaying,
     setInView,
     sendDraft,
     replay,
-    applyAccount,
     current,
   };
 }

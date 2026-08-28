@@ -1,24 +1,23 @@
-import type { ClipId, JobId } from "./types";
+import type { JobId } from "./types";
 
 export type SiteKind =
-  | "granola"
+  | "azure-devops"
+  | "github"
+  | "repository"
   | "figma"
-  | "gong"
-  | "sfdc-account"
-  | "sfdc-opp"
-  | "sheets"
-  | "gmail"
-  | "slack"
-  | "gdoc"
-  | "linkedin"
-  | "research"
-  | "page"
-  | "clip";
+  | "browser"
+  | "review";
 
 export type ChromeTab = {
   id: string;
   host: string;
   label: string;
+};
+
+export type ComputerRow = {
+  label: string;
+  value: string;
+  state: "open" | "checked" | "review";
 };
 
 export type ComputerBeat = {
@@ -27,211 +26,188 @@ export type ComputerBeat = {
   path?: string;
   title: string;
   site: SiteKind;
-  clip?: ClipId;
   tabs: ChromeTab[];
+  rows: ComputerRow[];
 };
 
-const granola = { id: "granola", host: "granola.app", label: "Granola" };
+const azureDevOps = {
+  id: "azure-devops",
+  host: "dev.azure.com",
+  label: "Azure DevOps",
+};
+const github = { id: "github", host: "github.com", label: "GitHub" };
+const repository = {
+  id: "repository",
+  host: "workspace.local",
+  label: "Repository",
+};
 const figma = { id: "figma", host: "figma.com", label: "Figma" };
-const gmail = { id: "gmail", host: "mail.google.com", label: "Gmail" };
-const gong = { id: "gong", host: "app.gong.io", label: "Gong" };
-const sfdc = {
-  id: "sfdc",
-  host: "datadog.lightning.force.com",
-  label: "Salesforce",
-};
-const sheets = {
-  id: "sheets",
-  host: "docs.google.com",
-  label: "Sheets",
-};
-const slack = { id: "slack", host: "app.slack.com", label: "Slack" };
-const gdoc = { id: "gdoc", host: "docs.google.com", label: "Docs" };
-const linkedin = {
-  id: "linkedin",
-  host: "www.linkedin.com",
-  label: "LinkedIn",
-};
-const web = { id: "web", host: "acme.com", label: "Acme" };
+const browser = { id: "browser", host: "localhost", label: "Browser" };
+const review = { id: "review", host: "review.local", label: "Review" };
 
 export const SCREENS: Record<JobId, Record<string, ComputerBeat>> = {
-  "standardize-room": {
+  "evaluation-scout": {
     m1: {
-      pill: "Opening Granola",
-      host: "granola.app",
-      path: "/notes/acme-datadog",
-      title: "Acme <> Datadog",
-      site: "granola",
-      tabs: [granola, figma, gmail],
+      pill: "Opening the selected work item",
+      host: "dev.azure.com",
+      path: "/hrblock/evaluation/workitems/selected",
+      title: "Evaluation work item",
+      site: "azure-devops",
+      tabs: [azureDevOps, github, review],
+      rows: [
+        { label: "Work item", value: "Selected", state: "checked" },
+        { label: "Scope", value: "Bounded", state: "checked" },
+        { label: "Changes", value: "None", state: "review" },
+      ],
     },
     m2: {
-      pill: "In Granola",
-      host: "granola.app",
-      path: "/notes/acme-datadog",
-      title: "Acme <> Datadog",
-      site: "granola",
-      tabs: [granola, figma, gmail],
+      pill: "Reviewing repository signals",
+      host: "github.com",
+      path: "/hrblock",
+      title: "Repository signals",
+      site: "github",
+      tabs: [azureDevOps, github, review],
+      rows: [
+        { label: "Azure DevOps", value: "Current center", state: "checked" },
+        { label: "GitHub", value: "4 to 5 repos", state: "checked" },
+        { label: "Broader adoption", value: "Planned", state: "open" },
+      ],
     },
     m3: {
-      pill: "Pulling Granola, still on the call",
-      host: "granola.app",
-      path: "/notes/acme-datadog",
-      title: "Acme <> Datadog",
-      site: "clip",
-      clip: "03-slides-granola",
-      tabs: [granola, figma, gmail],
+      pill: "Preparing the evaluation brief",
+      host: "review.local",
+      path: "/hrblock/evaluation-brief",
+      title: "Scoped evaluation brief",
+      site: "review",
+      tabs: [azureDevOps, github, review],
+      rows: [
+        { label: "Greenfield", value: "Bounded task", state: "checked" },
+        { label: "Brownfield", value: "Bounded task", state: "checked" },
+        { label: "Open decisions", value: "Listed", state: "review" },
+      ],
     },
     m4: {
-      pill: "Writing their discovery into the deck",
-      host: "figma.com",
-      path: "/file/acme-next-meeting",
-      title: "Acme next meeting",
-      site: "figma",
-      tabs: [granola, figma, gmail],
-    },
-    m5: {
-      pill: "Drafting the one-pager",
-      host: "figma.com",
-      path: "/file/acme-leave-behind",
-      title: "Acme one-pager",
-      site: "figma",
-      tabs: [granola, figma, gmail],
-    },
-    m6: {
-      pill: "Building the inside note",
-      host: "figma.com",
-      path: "/file/acme-champion-packet",
-      title: "Inside note",
-      site: "figma",
-      tabs: [granola, figma, gmail],
-    },
-    m7: {
-      pill: "Drafting in Gmail, not sent",
-      host: "mail.google.com",
-      path: "/mail/u/0/#drafts",
-      title: "Drafts",
-      site: "gmail",
-      tabs: [granola, figma, gmail],
-    },
-    m8: {
-      pill: "Drafting in Gmail, not sent",
-      host: "mail.google.com",
-      path: "/mail/u/0/#drafts",
-      title: "Drafts",
-      site: "gmail",
-      tabs: [granola, figma, gmail],
+      pill: "Brief parked for review",
+      host: "review.local",
+      path: "/hrblock/evaluation-brief",
+      title: "Scoped evaluation brief",
+      site: "review",
+      tabs: [azureDevOps, github, review],
+      rows: [
+        { label: "Artifact", value: "Ready to review", state: "checked" },
+        { label: "Customer changes", value: "None", state: "checked" },
+        { label: "Next step", value: "Team review", state: "review" },
+      ],
     },
   },
-  "legal-redlines": {
+  "brownfield-agent": {
     m1: {
-      pill: "Opening Gmail",
-      host: "mail.google.com",
-      path: "/mail/u/0/#inbox",
-      title: "Inbox",
-      site: "gmail",
-      tabs: [gmail, gdoc],
+      pill: "Opening linked code and tests",
+      host: "workspace.local",
+      path: "/hrblock/repository",
+      title: "Existing-code task",
+      site: "repository",
+      tabs: [azureDevOps, repository, review],
+      rows: [
+        { label: "Task", value: "Linked", state: "checked" },
+        { label: "Repository guide", value: "Reading", state: "open" },
+        { label: "Nearby tests", value: "Located", state: "checked" },
+      ],
     },
     m2: {
-      pill: "Drafting so you do not chase billing",
-      host: "mail.google.com",
-      path: "/mail/u/0/#inbox",
-      title: "Inbox",
-      site: "clip",
-      clip: "01-morning-inbox",
-      tabs: [gmail, gdoc],
+      pill: "Narrowing the candidate patch",
+      host: "workspace.local",
+      path: "/hrblock/repository/change",
+      title: "Candidate patch",
+      site: "repository",
+      tabs: [azureDevOps, repository, review],
+      rows: [
+        { label: "Change surface", value: "Smallest patch", state: "checked" },
+        { label: "Existing checks", value: "Listed", state: "checked" },
+        { label: "Questions", value: "Held for review", state: "review" },
+      ],
     },
     m3: {
-      pill: "Drafting the morning reply, not sent",
-      host: "docs.google.com",
-      path: "/document/d/acme-invoices",
-      title: "Acme invoices INV-0080 · INV-0081",
-      site: "gdoc",
-      tabs: [gmail, gdoc],
+      pill: "Building the change packet",
+      host: "review.local",
+      path: "/hrblock/change-packet",
+      title: "Brownfield change packet",
+      site: "review",
+      tabs: [azureDevOps, repository, review],
+      rows: [
+        { label: "Candidate change", value: "Grouped", state: "checked" },
+        { label: "Test plan", value: "Included", state: "checked" },
+        { label: "Open questions", value: "Visible", state: "review" },
+      ],
     },
     m4: {
-      pill: "Drafting in Gmail, not sent",
-      host: "mail.google.com",
-      path: "/mail/u/0/#drafts",
-      title: "Drafts",
-      site: "gmail",
-      tabs: [gmail, gdoc],
-    },
-    m5: {
-      pill: "Drafting in Gmail, not sent",
-      host: "mail.google.com",
-      path: "/mail/u/0/#drafts",
-      title: "Drafts",
-      site: "gmail",
-      tabs: [gmail, gdoc],
+      pill: "Packet parked for review",
+      host: "review.local",
+      path: "/hrblock/change-packet",
+      title: "Brownfield change packet",
+      site: "review",
+      tabs: [azureDevOps, repository, review],
+      rows: [
+        { label: "Artifact", value: "Ready to review", state: "checked" },
+        { label: "Patch applied", value: "No", state: "checked" },
+        { label: "Test claims", value: "None", state: "checked" },
+      ],
     },
   },
-  "attach-engine": {
+  "figma-builder": {
     m1: {
-      pill: "Researching the account",
-      host: "acme.com",
-      path: "/careers/staff-sre",
-      title: "Staff SRE · Observability",
-      site: "research",
-      tabs: [web, gdoc, linkedin, gmail],
+      pill: "Opening the approved selection",
+      host: "figma.com",
+      path: "/file/hrblock/approved-selection",
+      title: "Approved Figma selection",
+      site: "figma",
+      tabs: [figma, repository, browser, review],
+      rows: [
+        { label: "Frame", value: "Selected", state: "checked" },
+        { label: "Variants", value: "Inspecting", state: "open" },
+        { label: "UI context", value: "Linked", state: "checked" },
+      ],
     },
     m2: {
-      pill: "Pulling public evidence of the pain",
-      host: "acme.com",
-      path: "/status",
-      title: "Acme status",
-      site: "clip",
-      clip: "02-prospecting-pg",
-      tabs: [web, gdoc, linkedin, gmail],
+      pill: "Checking responsive and keyboard states",
+      host: "localhost",
+      path: "/hrblock/preview",
+      title: "Interface checks",
+      site: "browser",
+      tabs: [figma, repository, browser, review],
+      rows: [
+        { label: "UI system", value: "Mapped", state: "checked" },
+        { label: "Responsive", value: "Desktop + mobile", state: "checked" },
+        { label: "Keyboard", value: "Review needed", state: "review" },
+      ],
     },
     m3: {
-      pill: "Writing the 3-why hypothesis",
-      host: "docs.google.com",
-      path: "/document/d/acme-3-why",
-      title: "Acme 3-why",
-      site: "gdoc",
-      tabs: [web, gdoc, linkedin, gmail],
+      pill: "Preparing the implementation review",
+      host: "review.local",
+      path: "/hrblock/implementation-review",
+      title: "Figma implementation review",
+      site: "review",
+      tabs: [figma, repository, browser, review],
+      rows: [
+        { label: "Selection", value: "Recorded", state: "checked" },
+        { label: "UI mapping", value: "Included", state: "checked" },
+        { label: "Open questions", value: "Visible", state: "review" },
+      ],
     },
     m4: {
-      pill: "Naming who would care",
-      host: "docs.google.com",
-      path: "/document/d/acme-3-why",
-      title: "Acme 3-why",
-      site: "gdoc",
-      tabs: [web, gdoc, linkedin, gmail],
+      pill: "Review parked for the team",
+      host: "review.local",
+      path: "/hrblock/implementation-review",
+      title: "Figma implementation review",
+      site: "review",
+      tabs: [figma, repository, browser, review],
+      rows: [
+        { label: "Artifact", value: "Ready to review", state: "checked" },
+        { label: "Customer changes", value: "None", state: "checked" },
+        { label: "Next step", value: "Team review", state: "review" },
+      ],
     },
-    m5: {
-      pill: "Drafting LinkedIn, not sent",
-      host: "www.linkedin.com",
-      path: "/messaging/compose",
-      title: "Message",
-      site: "linkedin",
-      tabs: [web, gdoc, linkedin, gmail],
-    },
-    m6: {
-      pill: "Drafting in Gmail, not sent",
-      host: "mail.google.com",
-      path: "/mail/u/0/#drafts",
-      title: "Drafts",
-      site: "gmail",
-      tabs: [web, gdoc, linkedin, gmail],
-    },
-    m7: {
-      pill: "Building a page for this account",
-      host: "acme.datadoghq.dev",
-      path: "/acme-sev2",
-      title: "For Acme platform",
-      site: "page",
-      tabs: [web, gdoc, linkedin, gmail],
-    },
-    m8: {
-      pill: "Drafts parked. Nothing sent",
-      host: "mail.google.com",
-      path: "/mail/u/0/#drafts",
-      title: "Drafts",
-      site: "gmail",
-      tabs: [web, gdoc, linkedin, gmail],
-    },
-  }
+  },
 };
 
 export function beatFor(

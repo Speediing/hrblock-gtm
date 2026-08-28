@@ -5,32 +5,50 @@ export type FleetBot = {
   name: string;
   blurb: string;
   color: string;
+  computer: "Own computer";
   jobId?: JobId;
   mark?: string;
-  seat?: boolean;
+  lead?: boolean;
 };
 
 export const FLEET: FleetBot[] = [
   {
-    id: "rep",
-    name: "Every sales rep",
-    blurb: "The human stays in control. Their agents keep the surrounding work moving.",
-    color: "#E8E8ED",
-    mark: "AE",
-    seat: true,
+    id: "evaluation-scout",
+    name: "Evaluation Scout",
+    blurb: "Opens selected work context and prepares a bounded evaluation brief.",
+    color: "#14aa40",
+    computer: "Own computer",
+    jobId: "evaluation-scout",
+    lead: true,
   },
   {
-    id: "inbox",
-    name: "Inbox agent",
-    blurb: "Watches procurement. Finds answers overnight before the rep opens Gmail.",
-    jobId: "legal-redlines",
-    color: "#FF375F",
+    id: "brownfield-agent",
+    name: "Brownfield Agent",
+    blurb: "Reads linked code and tests before preparing a small candidate patch.",
+    color: "#08752e",
+    computer: "Own computer",
+    jobId: "brownfield-agent",
   },
   {
-    id: "cross-sell",
-    name: "Outbound agent",
-    blurb: "Watches target accounts. Builds the 3-why and queues personalized drafts.",
-    jobId: "attach-engine",
-    color: "#FF9500",
+    id: "figma-builder",
+    name: "Figma Builder",
+    blurb: "Maps an approved Figma selection to the existing UI system.",
+    color: "#6f8f75",
+    computer: "Own computer",
+    jobId: "figma-builder",
+  },
+  {
+    id: "bugbot-reviewer",
+    name: "Bugbot Reviewer",
+    blurb: "Reviews a proposed change and leaves findings for the team.",
+    color: "#4e7858",
+    computer: "Own computer",
+  },
+  {
+    id: "release-checker",
+    name: "Release Checker",
+    blurb: "Collects release checks and holds open items for review.",
+    color: "#9ab69f",
+    computer: "Own computer",
   },
 ];

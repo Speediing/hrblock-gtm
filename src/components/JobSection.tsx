@@ -4,9 +4,9 @@ import { ChapterPayoff } from "./ChapterPayoff";
 import { JobMore } from "./JobMore";
 
 const JOB_ART: Record<JobId, string> = {
-  "standardize-room": "/brand/watercolor-room.png",
-  "legal-redlines": "/brand/watercolor-deal.png",
-  "attach-engine": "/brand/watercolor-attach.png",
+  "evaluation-scout": "/brand/hrblock-watercolor-room.jpg",
+  "brownfield-agent": "/brand/hrblock-watercolor-deal.jpg",
+  "figma-builder": "/brand/hrblock-watercolor-attach.jpg",
 };
 
 export function JobSection({ job }: { job: CroJob }) {
@@ -28,14 +28,14 @@ export function JobSection({ job }: { job: CroJob }) {
         <div className="background-agent">
           <span className="background-agent-pulse" aria-hidden />
           <p>
-            <strong>Background agent active</strong>
+            <strong>{job.agent} · illustrative</strong>
             <small>
               {job.trigger} → {job.backgroundAction}
             </small>
           </p>
         </div>
         <h2 className="job-title">{job.title}</h2>
-        <p className="job-value">{job.outcome}</p>
+        <p className="job-value">{job.summary}</p>
         <Storyboard beats={lead} />
         {payoff ? (
           <ChapterPayoff beat={payoff} wash={JOB_ART[job.id]} />

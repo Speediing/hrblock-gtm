@@ -1,7 +1,9 @@
+import { BrandLockup } from "@/components/BrandLockup";
 import { CompareTable } from "@/components/CompareTable";
 import { HeroTelemetry } from "@/components/HeroTelemetry";
 import { JobSection } from "@/components/JobSection";
 import { QuoteWall } from "@/components/QuoteWall";
+import { RosterChart } from "@/components/RosterChart";
 import { SiteNav } from "@/components/SiteNav";
 import { JOBS } from "@/data/jobs";
 
@@ -12,7 +14,7 @@ export default function HomePage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="hero-watercolor-image"
-          src="/brand/watercolor-pad.png"
+          src="/brand/hrblock-watercolor-pad.jpg"
           alt=""
         />
         <SiteNav />
@@ -23,24 +25,36 @@ export default function HomePage() {
           <HeroTelemetry />
           <section className="hero">
             <div>
-              <p className="eyebrow">A proactive agent for every Datadog rep</p>
-              <h1>The agents that work while your reps sell.</h1>
+              <p className="eyebrow">
+                An illustrative software fleet for H&amp;R Block
+              </p>
+              <h1>Software agents with their own computers.</h1>
               <p className="hero-intro">
-                Grok Bot listens to calls, watches the inbox, and researches
-                accounts in the background. Work triggers it — not another
-                prompt.
+                These workflows start from the current evaluation context.
+                Most engineering work is in Azure DevOps today. Four to five
+                repositories are already in GitHub, with broader adoption
+                planned by year end.
               </p>
             </div>
           </section>
 
+          <RosterChart />
+
           <section className="usecase-framing">
             <p className="eyebrow">Three sample use cases</p>
             <h2>
-              Grok Bot gives every seller their own fleet of always-available
-              agent teammates. Anything your sellers do today can be done
-              through Grok Bot.
+              Three illustrative paths from selected work to a reviewable
+              artifact.
             </h2>
-            <p>These are three examples from millions — not the boundary.</p>
+            <p className="account-evidence">
+              The evaluation should include bounded greenfield and brownfield
+              work. Figma and Azure DevOps context can be part of the input.
+            </p>
+            <p className="account-evidence">
+              Production versus sandbox still needs architecture and security
+              input. Success criteria still need definition. Cloud Agents and
+              Bugbot are recommendations, not agreed decisions.
+            </p>
           </section>
 
           <div className="metric-grid">
@@ -69,7 +83,7 @@ export default function HomePage() {
 
       <div className="orbit-break" aria-hidden>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/watercolor-orbit.png" alt="" />
+        <img src="/brand/hrblock-watercolor-orbit.jpg" alt="" />
       </div>
 
       <div className="report">
@@ -79,15 +93,14 @@ export default function HomePage() {
 
       <footer className="site-footer">
         <div>
-          <p className="footer-title">Cursor for Datadog</p>
-          <p>Grok Bot for Datadog sales</p>
+          <BrandLockup size="sm" invert />
+          <p className="footer-title">H&amp;R Block x SpaceXAI</p>
+          <p>Illustrative Grok Bot software workflows</p>
         </div>
         <address className="footer-contact">
-          <p>Datadog&apos;s existing Cursor contact</p>
-          <strong>Madeline Ingleby</strong>
-          <a href="mailto:madeline.ingleby@cursor.com">
-            madeline.ingleby@cursor.com
-          </a>
+          <p>Contact</p>
+          <strong>Nick Scallion</strong>
+          <a href="mailto:nick.scallion@cursor.com">nick.scallion@cursor.com</a>
         </address>
       </footer>
     </main>

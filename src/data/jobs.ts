@@ -1,608 +1,383 @@
-import type { Artifact, CroJob, SlideCard } from "./types";
+import type { Artifact, CroJob } from "./types";
 
-export const ACME_TAIL_SLIDES: SlideCard[] = [
-  {
-    n: 4,
-    kicker: "They said · 4 min ago",
-    voice: "them",
-    title: "The Sev-2",
-    body: "We cannot tell a Sev-2 story across APM and logs without stitching tools.",
-  },
-  {
-    n: 5,
-    kicker: "Mapped live",
-    voice: "us",
-    title: "Start with APM + Logs",
-    body: "Same team that already feels the outage. Start there this quarter.",
-  },
-  {
-    n: 6,
-    kicker: "They said · 4 min ago",
-    voice: "them",
-    title: "The security bar",
-    body: "Security will not let another agent in without SSO and an audit trail.",
-  },
-  {
-    n: 7,
-    kicker: "Mapped live",
-    voice: "us",
-    title: "SSO, then Bits AI",
-    body: "Named on this call. One team. Bits AI after they see a faster fix.",
-  },
-];
+const EVALUATION_BRIEF = {
+  kind: "one-pager",
+  eyebrow: "Illustrative artifact",
+  title: "Scoped evaluation brief",
+  sections: [
+    {
+      heading: "Work",
+      body: "Select one bounded greenfield task and one bounded brownfield task.",
+    },
+    {
+      heading: "Source control",
+      body: "Most engineering work is in Azure DevOps today. Four to five repositories are already in GitHub, with broader adoption planned by year end.",
+    },
+    {
+      heading: "Context",
+      body: "Use the selected Azure DevOps work item, linked repository context, and approved Figma context when relevant.",
+    },
+    {
+      heading: "Environment",
+      body: "Production versus sandbox still needs architecture and security input.",
+    },
+    {
+      heading: "Success",
+      body: "Success criteria still need to be defined before the evaluation starts.",
+    },
+    {
+      heading: "Starting point",
+      body: "Cloud Agents and Bugbot are recommendations for the evaluation, not agreed decisions.",
+    },
+  ],
+} satisfies Extract<Artifact, { kind: "one-pager" }>;
 
-export const ACME_PROCUREMENT: Extract<Artifact, { kind: "redlines" }> = {
-  kind: "redlines",
-  title: "Acme procurement · overnight invoices",
-  paperTitle: "Their questions",
-  from: "Jordan Hale, Acme procurement · 5:27am your time",
-  marks: [
+const CHANGE_PACKET = {
+  kind: "packet",
+  title: "Brownfield change packet",
+  fields: [
     {
-      text: "Why the $427.51 catch-up, and will it happen again?",
-      note: "Billing-system miss on our side, 1 July–17 July. INV-0081 is the one-time correction. Gap is closed.",
-      take: true,
+      label: "Scope",
+      value: "Prepare the smallest reviewable patch for the selected existing-code task.",
     },
     {
-      text: "Can the admin portal be trusted? Any more retro charges?",
-      note: "Dashboard for usage. Invoices under Billing are the billed record. Flag anything from a closed period before it is billed.",
-      take: true,
+      label: "Code context",
+      value: "Read the linked code, nearby tests, and repository guidance before editing.",
     },
     {
-      text: "How was the $715.55 Teams invoice calculated?",
-      note: "Two mid-cycle adds, 19→20→21, not one full-year seat. Proration through 17 July 2027. Seat is $384/year.",
-      take: true,
+      label: "Checks",
+      value: "List the existing checks that should run. Do not claim a result until they run.",
     },
     {
-      text: "Spend caps, PO invoicing, per-user limits.",
-      note: "Team-wide monthly cap is on Teams. Per-user caps and annual PO are Enterprise. Do not re-trade that from this inbox.",
-      take: false,
+      label: "Review",
+      value: "Leave the candidate change, affected files, test plan, and open questions together.",
     },
   ],
-  reply: {
-    to: "Jordan Hale, Acme procurement",
-    subject: "Acme invoices INV-0080 and INV-0081. Answers you can send today",
-    body: "Hi Jordan,\n\nINV-0081 ($427.51) is a one-time catch-up for usage 1–17 July that our billing system missed. Not new usage. Gap is closed. No further retros expected; I would flag any closed-period item before it billed.\n\nDashboard = usage. Billing invoices = what was billed. Those should now match. Send any line that does not.\n\nINV-0080 ($715.55) is two mid-cycle seat adds (19→21), not a full-year seat at $384. Renewal date does not change.\n\nTeam-wide spend cap is on Teams. Per-user caps and annual PO are Enterprise — that stays on the order form.\n\nHappy to jump on a call before these are processed.\n\nBest,",
-  },
-};
+} satisfies Extract<Artifact, { kind: "packet" }>;
 
-export const ACME_OUTBOUND: Extract<Artifact, { kind: "outbound" }> = {
-  kind: "outbound",
-  title: "Acme outbound",
-  account: "Acme",
-  hypothesis: [
+const IMPLEMENTATION_REVIEW = {
+  kind: "one-pager",
+  eyebrow: "Illustrative artifact",
+  title: "Figma implementation review",
+  sections: [
     {
-      k: "Why us",
-      body: "On-call still stitches Prometheus, Grafana, and a log pile to name a Sev-2. APM + Logs is the start, not a catalog pitch.",
+      heading: "Selection",
+      body: "Record the approved Figma frame and the UI states included in the task.",
     },
     {
-      k: "Why now",
-      body: "Public incident 14 days ago. 47 minutes to name the failing service. Staff SRE JD asks for stitching APM and logs. The pain is current.",
+      heading: "UI mapping",
+      body: "Map the selection to the existing component and style system before adding new patterns.",
     },
     {
-      k: "Why them",
-      body: "VP Eng owns time-to-fix. Platform director lives in that stitch. They are the ones who felt the last Sev-2.",
-    },
-  ],
-  evidence: [
-    {
-      source: "Status page · 14 days ago",
-      finding:
-        "Sev-2, 47 minutes to name the failing service. Postmortem language is still 'we jumped three tools.'",
+      heading: "Responsive states",
+      body: "Review desktop and mobile layouts for the selected interface.",
     },
     {
-      source: "Careers · Staff SRE",
-      finding:
-        "JD asks for 'experience stitching APM and logs across teams.' Open role, posted this month.",
+      heading: "Keyboard states",
+      body: "Review focus order, visible focus, and keyboard operation.",
     },
     {
-      source: "Engineering blog",
-      finding:
-        "We outgrew homegrown dashboards. No named replacement. That is the gap.",
+      heading: "Review",
+      body: "Leave the implementation notes and open questions with the candidate change.",
     },
   ],
-  targets: [
-    {
-      name: "Priya Shah",
-      role: "VP Engineering",
-      why: "Owns time-to-fix. Named in the SRE hiring chain.",
-    },
-    {
-      name: "Chris Okonkwo",
-      role: "Director, Platform",
-      why: "Team is the one stitching APM and logs today.",
-    },
-  ],
-  page: {
-    headline: "Acme's Sev-2 is a stitching problem",
-    body: "The last incident and the Staff SRE JD say the same thing. Start APM + Logs in the platform team. Bits AI after that team has a week-3 number. Not a product tour.",
-  },
-};
+} satisfies Extract<Artifact, { kind: "one-pager" }>;
 
 export const JOBS: CroJob[] = [
   {
-    id: "standardize-room",
+    id: "evaluation-scout",
     number: 1,
-    title: "Update decks in real time",
-    trigger: "A customer call starts",
-    backgroundAction: "Listening to discovery + updating the open deck",
+    agent: "Evaluation Scout",
+    illustrative: true,
+    title: "Scope the evaluation before work starts",
+    trigger: "A scoped Azure DevOps work item is selected",
+    backgroundAction: "Opening work context and repository signals",
     problem:
-      "A generic deck is a pitch they have already sat through. The wow is hearing their own discovery back, then seeing the next product named for their team, while they are still on.",
+      "An evaluation needs a small, reviewable scope. The work, environment, and success criteria should be clear before an agent starts.",
     botJob:
-      "Granola is in while you are on. The last slides become their words and a product suggestion that fits this room. Not last quarter's story.",
+      "Evaluation Scout opens the selected work item and related repository signals, then prepares a brief for review.",
     storyboard: [
       {
-        when: "Minute 8",
-        label: "The call starts. Grok is already listening — no prompt needed.",
-        scene: "call",
+        when: "Scene 01",
+        label: "A scoped Azure DevOps work item becomes the starting point.",
+        scene: "inspect",
         visual: {
-          kind: "live-call",
-          title: "Acme discovery",
-          people: [
-            { initials: "JW", name: "You" },
-            { initials: "PS", name: "Priya" },
-            { initials: "CO", name: "Chris" },
+          kind: "software",
+          app: "Azure DevOps",
+          title: "Evaluation work item",
+          status: "Selected",
+          rows: [
+            { label: "Scope", value: "Bounded task", state: "checked" },
+            { label: "Context", value: "Work item linked", state: "open" },
+            { label: "Changes", value: "None yet", state: "review" },
           ],
         },
       },
       {
-        when: "Minute 22",
-        label: "Their exact language lands in the transcript.",
-        scene: "demo",
-        visual: {
-          kind: "live-transcript",
-          timestamp: "14:31",
-          speaker: "Priya",
-          quote: "We stitch APM and logs together every time there is a Sev-2.",
-          signals: ["Sev-2", "APM + Logs"],
-        },
-      },
-      {
-        when: "Minute 31",
-        label: "Grok maps it to product and rewrites the open deck.",
+        when: "Scene 02",
+        label: "The agent opens source-control context and records what is still unknown.",
         scene: "notes",
         visual: {
-          kind: "deck-update",
-          eyebrow: "Their words",
-          headline: "A Sev-2 is a stitching problem",
-          product: "Start with APM + Logs",
-          status: "3 slides updated",
+          kind: "software",
+          app: "GitHub",
+          title: "Repository signals",
+          status: "Reviewing",
+          rows: [
+            { label: "Azure DevOps", value: "Current center", state: "checked" },
+            { label: "GitHub", value: "4 to 5 repos", state: "checked" },
+            { label: "Environment", value: "Decision needed", state: "review" },
+          ],
         },
       },
       {
-        when: "Minute 35",
-        label: "Present the new slides before the call ends.",
-        scene: "deck",
-        slides: ACME_TAIL_SLIDES,
+        when: "Artifact",
+        label: "A scoped evaluation brief is ready for team review.",
+        scene: "send",
+        artifact: EVALUATION_BRIEF,
       },
     ],
     unlock:
-      "Hyper-personalized discovery on the slide, plus a tailored product next step, while they are still on.",
-    outcome:
-      "One live call becomes a customer-specific deck — before the call ends.",
-    clips: ["03-slides-granola"],
+      "The team gets one place to review scope, source control, environment questions, and success criteria.",
+    summary: "The last frame is a scoped evaluation brief for review.",
     demo: {
-      title: "Room Ops",
-      subtitle: "Live discovery · slides in their words",
+      title: "Evaluation Scout",
+      subtitle: "Scoped work item to evaluation brief",
+      illustrative: true,
       participants: [
         { id: "you", name: "You", role: "you" },
         {
-          id: "room",
-          name: "Room Ops",
+          id: "scout",
+          name: "Evaluation Scout",
           role: "bot",
-          persona: "Turns live discovery into slides that wow this room",
-          color: "#34C759",
-        },
-        {
-          id: "slides",
-          name: "Slides",
-          role: "bot",
-          persona: "Maps what they just said to a product suggestion for this team",
-          color: "#007AFF",
+          persona: "Opens work context and prepares a bounded evaluation brief",
+          color: "#14aa40",
         },
       ],
       messages: [
         {
           id: "m1",
-          from: "room",
+          from: "scout",
           kind: "routine",
-          body: "Customer call started. I am following Granola and watching for their language, blockers, and product signals. The open deck stays untouched until there is something worth changing.",
+          body: "Illustrative workflow. A scoped Azure DevOps work item was selected. I am opening the work context and linked repository signals.",
         },
         {
           id: "m2",
-          from: "room",
+          from: "scout",
           kind: "text",
-          body: "Priya just named the Sev-2 and the security bar in her words. Mapping both to the last slides now while the call is still live.",
+          body: "The evaluation should include one bounded greenfield task and one bounded brownfield task. Production versus sandbox and success criteria still need decisions.",
         },
         {
           id: "m3",
-          from: "room",
-          kind: "text",
-          body: "Still on. Granola 14:31. Their discovery is the slide. Sev-2 and the security bar in their words, then the product that fits this team. They should feel known, not pitched.",
+          from: "scout",
+          kind: "draft",
+          draftLabel: "Evaluation brief",
+          artifact: EVALUATION_BRIEF,
         },
         {
           id: "m4",
-          from: "slides",
-          kind: "draft",
-          draftLabel: "Last slides of the open deck · still on",
-          artifact: {
-            kind: "slides",
-            title: "What we heard",
-            cards: ACME_TAIL_SLIDES,
-          },
-        },
-        {
-          id: "m5",
-          from: "room",
-          kind: "draft",
-          draftLabel: "One-pager they can forward",
-          artifact: {
-            kind: "one-pager",
-            title: "Acme one-pager",
-            eyebrow: "One-pager",
-            sections: [
-              {
-                heading: "What we covered",
-                body: "Start with APM + Logs. Security needs SSO and an audit trail. Bits AI as a one-team trial, not a company-wide rollout.",
-              },
-              {
-                heading: "Security path",
-                body: "SSO and audit trail named before any extra products. The security lead from this call stays on the next meeting.",
-              },
-              {
-                heading: "Trial",
-                body: "Bits AI in the same team that starts APM + Logs. Week-3 time-to-fix is the gate. Add seats only after that number.",
-              },
-              {
-                heading: "What we need from you",
-                body: "Tuesday with your contact plus a security co-owner. Bring the contract owner if legal will slow SSO.",
-              },
-            ],
-          },
-        },
-        {
-          id: "m6",
-          from: "room",
-          kind: "draft",
-          draftLabel: "Note they can send inside",
-          artifact: {
-            kind: "packet",
-            title: "Forward this inside Acme",
-            fields: [
-              {
-                label: "Problem in their words",
-                value:
-                  "We cannot tell a Sev-2 story across APM and logs without stitching tools, and security will not let another agent in without SSO and an audit trail.",
-              },
-              {
-                label: "Why now",
-                value:
-                  "The team already agreed to start APM + Logs. Bits AI is useful in that same week-3 window, not after a product tour next quarter.",
-              },
-              {
-                label: "Risks already named",
-                value:
-                  "SSO + audit trail. Legal may slow the contract. Cost came up once and is not in this ask. RUM is not in the room.",
-              },
-              {
-                label: "Exact ask for next Tuesday",
-                value:
-                  "30 minutes. Your contact + a security co-owner. Dated SSO path. Written Bits AI trial scope for one team.",
-              },
-            ],
-          },
-        },
-        {
-          id: "m7",
-          from: "room",
-          kind: "draft",
-          draftLabel: "Gmail to your contact",
-          artifact: {
-            kind: "gmail",
-            title: "Forward to your contact",
-            to: "Acme contact",
-            subject: "Acme / Datadog. Tuesday packet (SSO, Bits AI trial)",
-            body: "Forwarding the internal note from today's room. Problem is in your words. Tuesday ask is your contact + a security co-owner, a dated SSO path, and a one-team Bits AI trial. Nothing else is in the ask.",
-          },
-        },
-        {
-          id: "m8",
-          from: "room",
+          from: "scout",
           kind: "system",
-          body: "Nothing sent. Deck, one-pager, note, and Gmail stay drafts until you tap Send.",
+          body: "Illustrative only. No customer system was changed.",
         },
       ],
     },
   },
   {
-    id: "legal-redlines",
+    id: "brownfield-agent",
     number: 2,
-    title: "Find product and internal answers fast",
-    trigger: "A customer question lands",
-    backgroundAction: "Searching product knowledge + internal company context",
+    agent: "Brownfield Agent",
+    illustrative: true,
+    title: "Prepare the smallest reviewable code change",
+    trigger: "An existing-code task is selected",
+    backgroundAction: "Reading linked code and nearby tests",
     problem:
-      "A customer question can turn into a week of Slack across product, billing, finance, and legal. The seller waits, the customer waits, and internal experts lose time repeating answers.",
+      "Existing code carries local rules and test expectations. A useful first change should stay small and make its review path clear.",
     botJob:
-      "Grok Bot watches for the question, searches product knowledge and internal company context, and drafts a sourced reply. The seller reviews instead of chasing teams.",
+      "Brownfield Agent reads the linked code and tests, prepares the smallest candidate patch, and leaves a change packet.",
     storyboard: [
       {
-        when: "5:27am your time",
-        label: "Four questions land. Grok starts while you are asleep.",
-        scene: "notes",
-        visual: {
-          kind: "procurement-email",
-          sender: "Jordan · Acme procurement",
-          subject: "Questions on INV-0080 + 0081",
-          questions: 4,
-        },
-      },
-      {
-        when: "7:42am",
-        label: "Grok has already found and checked every answer.",
+        when: "Scene 01",
+        label: "The selected task points the agent to existing code and tests.",
         scene: "inspect",
         visual: {
-          kind: "answers-found",
-          sources: [
-            { name: "Billing", answer: "Catch-up explained" },
-            { name: "Finance", answer: "Proration checked" },
-            { name: "Packaging", answer: "Limits confirmed" },
+          kind: "software",
+          app: "Repository",
+          title: "Existing-code task",
+          status: "Context open",
+          rows: [
+            { label: "Task", value: "Linked", state: "checked" },
+            { label: "Code", value: "Reading", state: "open" },
+            { label: "Tests", value: "Nearby suite", state: "open" },
           ],
-          status: "4 / 4 answered",
         },
       },
       {
-        when: "7:44am",
-        label: "A sourced reply is waiting for one-click approval.",
-        scene: "send",
+        when: "Scene 02",
+        label: "The agent narrows the candidate patch and its test plan.",
+        scene: "notes",
         visual: {
-          kind: "reply-ready",
-          to: "Jordan Hale",
-          subject: "INV-0080 + 0081 · answers",
-          status: "Ready to approve",
+          kind: "software",
+          app: "Repository",
+          title: "Candidate patch",
+          status: "Reviewing",
+          rows: [
+            { label: "Change", value: "Smallest patch", state: "checked" },
+            { label: "Tests", value: "Plan listed", state: "checked" },
+            { label: "Open questions", value: "Held for review", state: "review" },
+          ],
         },
+      },
+      {
+        when: "Artifact",
+        label: "A change packet groups the candidate patch and review notes.",
+        scene: "send",
+        artifact: CHANGE_PACKET,
       },
     ],
     unlock:
-      "Invoice questions in. A sendable draft out. No week of internal delay.",
-    outcome:
-      "Grok finds the product and internal context, then drafts the answer — no Slack chase and no seller time wasted.",
-    clips: ["01-morning-inbox"],
+      "The reviewer sees the candidate change, affected context, test plan, and open questions together.",
+    summary: "The last frame is a brownfield change packet for review.",
     demo: {
-      title: "Paper",
-      subtitle: "Procurement questions · draft waiting",
+      title: "Brownfield Agent",
+      subtitle: "Existing code to reviewable change packet",
+      illustrative: true,
       participants: [
         { id: "you", name: "You", role: "you" },
         {
-          id: "paper",
-          name: "Paper",
+          id: "brownfield",
+          name: "Brownfield Agent",
           role: "bot",
-          persona: "Reads overnight procurement mail and drafts the reply so you do not chase billing",
-          color: "#FF375F",
+          persona: "Reads local code and tests before preparing a small patch",
+          color: "#08752e",
         },
       ],
       messages: [
         {
           id: "m1",
-          from: "paper",
+          from: "brownfield",
           kind: "routine",
-          body: "New Acme procurement thread detected at 5:27am. Two invoices, four questions. Checking billing, finance, and packaging while you are offline.",
+          body: "Illustrative workflow. An existing-code task was selected. I am opening the linked code, repository guidance, and nearby tests.",
         },
         {
           id: "m2",
-          from: "paper",
+          from: "brownfield",
           kind: "text",
-          body: "Already read it overnight. Four questions. Draft is waiting. You do not need to ping billing, finance, or legal for this one. Nothing sent.",
+          body: "I am keeping the candidate patch small. I will list affected files, the existing checks to run, and any question that needs a reviewer.",
         },
         {
           id: "m3",
-          from: "paper",
+          from: "brownfield",
           kind: "draft",
-          draftLabel: "Questions + reply",
-          artifact: ACME_PROCUREMENT,
+          draftLabel: "Change packet",
+          artifact: CHANGE_PACKET,
         },
         {
           id: "m4",
-          from: "paper",
-          kind: "draft",
-          draftLabel: "Gmail reply · not sent",
-          artifact: {
-            kind: "gmail",
-            title: "Reply to Acme procurement",
-            to: ACME_PROCUREMENT.reply.to,
-            subject: ACME_PROCUREMENT.reply.subject,
-            body: ACME_PROCUREMENT.reply.body,
-          },
-        },
-        {
-          id: "m5",
-          from: "paper",
+          from: "brownfield",
           kind: "system",
-          body: "Nothing sent. The reply stays a draft until you tap Send.",
+          body: "Illustrative only. No patch was applied and no test result is claimed.",
         },
       ],
     },
   },
   {
-    id: "attach-engine",
+    id: "figma-builder",
     number: 3,
-    title: "Pipeline generation is now easier than ever",
-    trigger: "A target account enters your list",
-    backgroundAction: "Researching signals + building personalized outreach",
+    agent: "Figma Builder",
+    illustrative: true,
+    title: "Map an approved Figma selection to the UI",
+    trigger: "An approved Figma selection is shared",
+    backgroundAction: "Mapping the selection to the existing UI system",
     problem:
-      "Cold outbound is a generic sequence. No research, no hypothesis, no evidence, and a name from a list. Pipeline that lands starts with why this account, why now, and who would care.",
+      "A Figma selection still needs code context. The implementation should use the current UI system and account for responsive and keyboard states.",
     botJob:
-      "When an account enters your target list, Grok Bot researches it, writes a 3-why, finds evidence of the pain, names who cares, then drafts LinkedIn, email, and a page. Draft only. You send.",
+      "Figma Builder opens the approved selection, maps it to existing UI patterns, and prepares an implementation review.",
     storyboard: [
       {
-        when: "No meeting yet",
-        label: "Acme hits your target list. Grok starts without a prompt.",
+        when: "Scene 01",
+        label: "The approved Figma selection defines the interface to review.",
         scene: "inspect",
         visual: {
-          kind: "account-research",
-          account: "Acme",
-          sources: ["Status page", "Careers", "Engineering"],
-          signal: "47-minute Sev-2",
-        },
-      },
-      {
-        when: "90 seconds later",
-        label: "It turns public evidence into a sharp 3-why.",
-        scene: "notes",
-        visual: {
-          kind: "three-why",
-          items: [
-            { label: "Why us", answer: "APM + Logs" },
-            { label: "Why now", answer: "Sev-2 · 14d ago" },
-            { label: "Why them", answer: "Own time-to-fix" },
+          kind: "software",
+          app: "Figma",
+          title: "Approved selection",
+          status: "Shared",
+          rows: [
+            { label: "Frame", value: "Selected", state: "checked" },
+            { label: "Components", value: "Inspecting", state: "open" },
+            { label: "Variants", value: "Included states", state: "open" },
           ],
         },
       },
       {
-        when: "Campaign ready",
-        label: "The right buyer gets three personalized drafts.",
-        scene: "map",
+        when: "Scene 02",
+        label: "The agent checks UI mapping, responsive states, and keyboard use.",
+        scene: "notes",
         visual: {
-          kind: "outreach-ready",
-          person: "Priya Shah · VP Engineering",
-          channels: ["LinkedIn", "Email", "Acme page"],
-          status: "3 drafts · 0 sent",
+          kind: "software",
+          app: "Browser",
+          title: "Interface checks",
+          status: "Reviewing",
+          rows: [
+            { label: "UI system", value: "Mapped", state: "checked" },
+            { label: "Responsive", value: "Desktop + mobile", state: "checked" },
+            { label: "Keyboard", value: "Focus review", state: "review" },
+          ],
         },
       },
       {
-        when: "Ready for your click",
-        label: "Research, message, and account page — all built from their business.",
+        when: "Artifact",
+        label: "An implementation review records the mapping and open questions.",
         scene: "send",
-        artifact: ACME_OUTBOUND,
+        artifact: IMPLEMENTATION_REVIEW,
       },
     ],
     unlock:
-      "Research, a 3-why, evidence, named buyers, and sendable drafts. Nothing fires until you tap.",
-    outcome:
-      "One account in. Research, a 3-why, named buyers, and personalized outreach out.",
-    clips: ["02-prospecting-pg"],
+      "The reviewer gets the approved selection, UI mapping, interaction checks, and open questions in one artifact.",
+    summary: "The last frame is a Figma implementation review.",
     demo: {
-      title: "Outbound",
-      subtitle: "Research to a first meeting",
+      title: "Figma Builder",
+      subtitle: "Approved selection to implementation review",
+      illustrative: true,
       participants: [
         { id: "you", name: "You", role: "you" },
         {
-          id: "attach",
-          name: "Outbound",
+          id: "figma",
+          name: "Figma Builder",
           role: "bot",
-          persona: "Researches the account, writes the 3-why, and drafts the outreach",
-          color: "#FF9500",
+          persona: "Maps approved Figma context to the existing UI system",
+          color: "#6f8f75",
         },
       ],
       messages: [
         {
           id: "m1",
-          from: "attach",
+          from: "figma",
           kind: "routine",
-          body: "Acme entered your target-account list. No meeting yet. Researching the account, building the 3-why, and finding the people who would feel the pain. Drafts only.",
+          body: "Illustrative workflow. An approved Figma selection was shared. I am opening the frame, variants, and existing UI context.",
         },
         {
           id: "m2",
-          from: "attach",
+          from: "figma",
           kind: "text",
-          body: "In the account. Careers, status page, engineering blog. Staff SRE JD is asking for stitching APM and logs. Status page still has a 47-minute Sev-2. Writing the 3-why from that, not from a persona.",
+          body: "The selection maps to the current UI system. I am checking desktop, mobile, focus order, and keyboard operation before review.",
         },
         {
           id: "m3",
-          from: "attach",
+          from: "figma",
           kind: "draft",
-          draftLabel: "3-why hypothesis",
-          artifact: {
-            kind: "packet",
-            title: "Acme 3-why",
-            fields: ACME_OUTBOUND.hypothesis.map((item) => ({
-              label: item.k,
-              value: item.body,
-            })),
-          },
+          draftLabel: "Implementation review",
+          artifact: IMPLEMENTATION_REVIEW,
         },
         {
           id: "m4",
-          from: "attach",
-          kind: "draft",
-          draftLabel: "Evidence + who cares",
-          artifact: {
-            kind: "packet",
-            title: "Proof, then the people",
-            fields: [
-              ...ACME_OUTBOUND.evidence.map((item) => ({
-                label: item.source,
-                value: item.finding,
-              })),
-              ...ACME_OUTBOUND.targets.map((person) => ({
-                label: `${person.name} · ${person.role}`,
-                value: person.why,
-              })),
-            ],
-          },
-        },
-        {
-          id: "m5",
-          from: "attach",
-          kind: "draft",
-          draftLabel: "LinkedIn · not sent",
-          artifact: {
-            kind: "linkedin",
-            title: "LinkedIn to Priya Shah",
-            to: "Priya Shah",
-            role: "VP Engineering, Acme",
-            body: "Priya — your status page from 14 days ago and the Staff SRE JD say the same thing: on-call still stitches tools to name a Sev-2. 90 seconds on how APM + Logs in the platform team would have named that incident. Draft only. Nothing sent.",
-          },
-        },
-        {
-          id: "m6",
-          from: "attach",
-          kind: "draft",
-          draftLabel: "Gmail · not sent",
-          artifact: {
-            kind: "gmail",
-            title: "Email to Priya Shah",
-            to: "Priya Shah, VP Engineering",
-            subject: "Acme's last Sev-2 and the Staff SRE JD",
-            body: "Priya — the 47-minute Sev-2 and the Staff SRE posting both point at stitching APM and logs. I put a one-page note on how Datadog would start in that platform team, not a product tour. Happy to walk Chris Okonkwo through it too. Nothing else in the ask. Draft only until you tap Send.",
-          },
-        },
-        {
-          id: "m7",
-          from: "attach",
-          kind: "draft",
-          draftLabel: "Page for this account · not live",
-          artifact: {
-            kind: "one-pager",
-            title: ACME_OUTBOUND.page.headline,
-            eyebrow: "Page for Acme",
-            sections: [
-              {
-                heading: "What we saw",
-                body:
-                  ACME_OUTBOUND.evidence[0]?.finding ??
-                  "Public incident. The stitch is still the story.",
-              },
-              {
-                heading: "Why this team",
-                body:
-                  ACME_OUTBOUND.hypothesis.find((item) => item.k === "Why them")
-                    ?.body ?? "VP Eng owns time-to-fix.",
-              },
-              {
-                heading: "How the product maps",
-                body: ACME_OUTBOUND.page.body,
-              },
-            ],
-          },
-        },
-        {
-          id: "m8",
-          from: "attach",
+          from: "figma",
           kind: "system",
-          body: "Nothing sent. LinkedIn, Gmail, and the page stay drafts until you tap Send.",
+          body: "Illustrative only. No customer interface or repository was changed.",
         },
       ],
     },
-  }
+  },
 ];
 
 export function getJob(id: string): CroJob | undefined {

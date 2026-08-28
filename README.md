@@ -1,12 +1,18 @@
-# Grok Bot for Datadog GTM
+# H&R Block x SpaceXAI
 
-Passworded site. Grok Bot from SpaceXAI, for Datadog GTM.
+Private, passworded leave-behind for an H&R Block software evaluation.
 
-## What it is
+## Page
 
-Three GTM jobs on one page. Each job has a short problem statement, an interactive Grok Bot demo, and the matching Krista Letz clips under that demo. Below that: a light index of the clips and the public Grok Bot quote wall.
+The page keeps the supplied Grok Bot template and its interactive chat and computer demos. It presents three illustrative workflows:
 
-## Run locally
+1. Evaluation Scout prepares a scoped evaluation brief.
+2. Brownfield Agent prepares a reviewable change packet.
+3. Figma Builder prepares an implementation review.
+
+Each workflow ends with an artifact for team review. Public product reactions keep their original source links.
+
+## Local setup
 
 ```bash
 cp .env.example .env.local
@@ -14,18 +20,15 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Default password is `land2expand` (override with `SITE_PASSWORD`).
+Set `SITE_PASSWORD` in `.env.local` before opening [http://localhost:3000](http://localhost:3000). The auth flow fails closed when the variable is missing or blank.
 
-## Krista clips
+The page expects the official wordmark at `public/brand/hrblock-wordmark.svg`. It also expects the supplied H&R Block watercolor files under `public/brand/`.
 
-Download into `private/media/krista-clips/` from the GitHub release (served only through the passworded `/api/media/...` route):
+## Checks
 
 ```bash
-gh release download krista-gtm-clips-720p-2026-08-26 \
-  --repo Speediing/grok-bot-quotes \
-  --dir private/media/krista-clips
+npm run lint
+npm run scan:residue
+npm run scan:emdash
+SITE_PASSWORD=your-local-value npm run build
 ```
-
-## Deploy
-
-Preview only under the `jasonwiker` Vercel team, project name `datadog-cro`. Set `SITE_PASSWORD=land2expand`. Do not promote to a public production domain until Jason says so.
