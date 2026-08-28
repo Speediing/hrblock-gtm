@@ -1,0 +1,58 @@
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  height: 16px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.customer,
+.partner {
+  flex-shrink: 0;
+  width: auto;
+  object-fit: contain;
+}
+
+.customer {
+  height: var(--lockup-mark);
+}
+
+.partner {
+  height: 10px;
+  filter: brightness(0);
+}
+
+.customerName {
+  height: var(--lockup-mark);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 620;
+  letter-spacing: -0.03em;
+  line-height: 16px;
+}
+
+.times {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.invert {
+  color: var(--canvas);
+}
+
+.invert .customerName,
+.invert .times {
+  color: #c9c6ba;
+}
+
+.invert .partner {
+  filter: none;
+}
