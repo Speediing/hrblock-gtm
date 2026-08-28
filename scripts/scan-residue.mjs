@@ -12,19 +12,30 @@ const skipDirs = new Set([
 const skipFiles = new Set([
   "package-lock.json",
   "scripts/scan-residue.mjs",
-  "public/brand/MISSING_OFFICIAL_WORDMARK.md",
 ]);
 
 const patterns = [
   /datadog/i,
   /seagate/i,
   /grokbot/i,
+  /the agents that work while your reps sell/i,
+  /sales outbound/i,
+  /deal desk coordinator/i,
+  /account research specialist/i,
+  /renewal desk operator/i,
+  /prospecting plan builder/i,
+  /watercolor-(?:pad|room|deal|attach|orbit)\.(?:png|webp)/i,
   /#f5f1e8/i,
   /#20231f/i,
   /#6ebe49/i,
   /#3d6b28/i,
   /#fbf9f4/i,
   /#d8d3c8/i,
+  /#632ca6/i,
+  /#4c1d82/i,
+  /#168c80/i,
+  /#0a1119/i,
+  /#101824/i,
 ];
 
 const hits = [];

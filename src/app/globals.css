@@ -7,12 +7,6 @@
   --ink: #121612;
   --muted: #5a635c;
   --line: #d9ddd4;
-  --workbench: #101713;
-  --workbench-raised: #17221a;
-  --workbench-line: #2b382e;
-  --workbench-text: #eef5ef;
-  --workbench-muted: #a7b4aa;
-  --warning-soft: #fff5d8;
   --focus: #08752e;
   --danger: #9b2c2c;
 
@@ -45,6 +39,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: 4.75rem;
+  scroll-behavior: smooth;
   color-scheme: light;
 }
 
@@ -73,6 +68,10 @@ svg {
 button,
 input {
   font: inherit;
+}
+
+button {
+  touch-action: manipulation;
 }
 
 a {
@@ -123,15 +122,16 @@ a {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 @media print {
   :root {
     --canvas: #ffffff;
     --surface: #ffffff;
-    --workbench: #ffffff;
-    --workbench-raised: #ffffff;
-    --workbench-text: #121612;
-    --workbench-muted: #5a635c;
-    --workbench-line: #d9ddd4;
   }
 
   body {
@@ -139,14 +139,10 @@ a {
     color: #121612;
   }
 
-  .site-header,
-  .workbench-controls,
-  .header-link {
+  .site-header {
     display: none !important;
   }
 
-  .workbench,
-  .workbench-device,
   .site-footer {
     background: #ffffff !important;
     color: #121612 !important;

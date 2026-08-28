@@ -1,6 +1,8 @@
 # H&R Block x SpaceXAI
 
-Private, passworded leave-behind for evaluating agent-assisted software work with H&R Block. Slug: `hrblock`.
+Private, passworded visual leave-behind for evaluating agent-assisted software work with H&R Block. The slug is `hrblock`.
+
+The protected page presents Grok Bot as a fleet of software agents with their own computers. It includes an interactive six-agent selector, three illustrative scene sequences, a six-computer fleet view, and a grounded evaluation section. Every scene ends with a reviewable artifact instead of a claimed customer result.
 
 ## Local setup
 

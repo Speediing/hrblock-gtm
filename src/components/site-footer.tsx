@@ -10,7 +10,7 @@ export function SiteFooter(props: {
   const { brand, contact } = props;
 
   return (
-    <footer className={styles.footer}>
+    <footer className={`${styles.footer} site-footer`}>
       <div className={`page-shell ${styles.footerInner}`}>
         <div>
           <p className={styles.footerPrompt}>{contact.prompt}</p>

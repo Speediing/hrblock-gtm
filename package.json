@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests/auth.test.ts tests/workbench.test.ts tests/login-route.test.ts",
+    "test": "tsx --test tests/auth.test.ts tests/fleet.test.ts tests/login-route.test.ts",
     "scan:residue": "node scripts/scan-residue.mjs",
     "scan:emdash": "node scripts/scan-emdash.mjs"
   },

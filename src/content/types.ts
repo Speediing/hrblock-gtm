@@ -1,7 +1,13 @@
 export type LeaveBehindSlug = "hrblock";
-export type DemoScenarioId = "brownfield" | "greenfield" | "design-handoff";
-export type DemoStepKind = "context" | "reasoning" | "action" | "review";
 export type AccountPlanEvidence = "account-plan";
+export type FleetAgentId =
+  | "ado-scout"
+  | "brownfield-runner"
+  | "greenfield-builder"
+  | "figma-builder"
+  | "bugbot-reviewer"
+  | "release-checker";
+export type StoryId = "existing-code" | "new-build" | "figma-to-code";
 
 export interface Wordmark {
   readonly src: "/brand/hrblock-wordmark.svg";
@@ -16,41 +22,88 @@ export interface EvidencedClaim {
   readonly evidence: AccountPlanEvidence;
 }
 
-export interface DemoStep {
-  readonly id: string;
-  readonly kind: DemoStepKind;
+export interface ComputerRow {
   readonly label: string;
-  readonly detail: string;
+  readonly value: string;
+  readonly state: "active" | "complete" | "open";
 }
 
-export interface DemoScenario {
-  readonly id: DemoScenarioId;
-  readonly shortLabel: string;
-  readonly title: string;
+export interface ComputerPreview {
+  readonly tab: string;
+  readonly path: string;
+  readonly rows: readonly ComputerRow[];
+}
+
+export interface ChatPreview {
   readonly prompt: string;
-  readonly context: readonly string[];
-  readonly steps: readonly DemoStep[];
-  readonly output: string;
-  readonly reviewGate: string;
+  readonly status: string;
 }
 
-export interface AgentDemoContent {
-  readonly label: "Illustrative agent workflow";
-  readonly initialScenarioId: DemoScenarioId;
-  readonly scenarios: readonly [DemoScenario, DemoScenario, DemoScenario];
+export interface FleetAgent {
+  readonly id: FleetAgentId;
+  readonly name: string;
+  readonly function: string;
+  readonly description: string;
+  readonly chat: ChatPreview;
+  readonly computer: ComputerPreview;
+  readonly illustrative: true;
 }
 
-export interface UseCaseContent {
-  readonly id: string;
-  readonly number: `${number}${number}`;
+export interface WorkflowScene {
+  readonly kind: "scene";
+  readonly number: "01" | "02";
+  readonly label: string;
+  readonly description: string;
+  readonly chat: ChatPreview;
+  readonly computer: ComputerPreview;
+  readonly illustrative: true;
+}
+
+export interface ArtifactScene {
+  readonly kind: "artifact";
+  readonly number: "03";
+  readonly label: "Artifact";
+  readonly title: string;
+  readonly summary: string;
+  readonly items: readonly string[];
+  readonly status: string;
+  readonly illustrative: true;
+}
+
+export type StoryFrames = readonly [
+  WorkflowScene,
+  WorkflowScene,
+  ArtifactScene,
+];
+
+export interface UseCaseStory {
+  readonly id: StoryId;
+  readonly number: "01" | "02" | "03";
+  readonly eyebrow: string;
+  readonly title: string;
+  readonly intro: string;
+  readonly agentId: FleetAgentId;
+  readonly frames: StoryFrames;
+  readonly illustrative: true;
+}
+
+export interface UseCaseCard {
+  readonly id: StoryId;
+  readonly number: "01" | "02" | "03";
   readonly title: string;
   readonly body: string;
-  readonly signals: readonly string[];
-  readonly evidence: AccountPlanEvidence;
+  readonly anchor: `#${StoryId}`;
+  readonly illustrative: true;
 }
 
 export interface EvaluationItem {
-  readonly id: "work" | "environment" | "connections" | "success";
+  readonly id:
+    | "work"
+    | "source-control"
+    | "context"
+    | "environment"
+    | "success"
+    | "starting-point";
   readonly title: string;
   readonly body: string;
   readonly evidence: AccountPlanEvidence;
@@ -69,22 +122,48 @@ export interface LeaveBehindContent {
     readonly partnerMarkSrc: "/brand/spacexai.svg";
     readonly wordmark: Wordmark;
   };
+  readonly navigation: readonly {
+    readonly label: string;
+    readonly href: `#${string}`;
+  }[];
   readonly hero: {
-    readonly eyebrow: "H&R Block x SpaceXAI";
+    readonly eyebrow: string;
+    readonly title: string;
+    readonly body: string;
+    readonly art: {
+      readonly src: "/brand/watercolor-fleet.jpg";
+      readonly alt: string;
+    };
+  };
+  readonly fleet: {
+    readonly eyebrow: string;
+    readonly title: string;
+    readonly body: string;
+    readonly label: "Illustrative software workflow";
+    readonly initialAgentId: FleetAgentId;
+    readonly agents: readonly [
+      FleetAgent,
+      FleetAgent,
+      FleetAgent,
+      FleetAgent,
+      FleetAgent,
+      FleetAgent,
+    ];
+  };
+  readonly useCases: {
+    readonly eyebrow: string;
+    readonly title: string;
+    readonly body: string;
+    readonly cards: readonly [UseCaseCard, UseCaseCard, UseCaseCard];
+    readonly stories: readonly [UseCaseStory, UseCaseStory, UseCaseStory];
+  };
+  readonly fleetBreak: {
+    readonly eyebrow: string;
     readonly title: string;
     readonly body: string;
   };
-  readonly demo: AgentDemoContent;
-  readonly opportunity: {
-    readonly number: "01";
-    readonly kicker: string;
-    readonly title: string;
-    readonly intro: EvidencedClaim;
-    readonly items: readonly UseCaseContent[];
-  };
   readonly evaluation: {
-    readonly number: "02";
-    readonly kicker: string;
+    readonly eyebrow: string;
     readonly title: string;
     readonly intro: EvidencedClaim;
     readonly items: readonly EvaluationItem[];
