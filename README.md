@@ -22,7 +22,7 @@ npm run dev
 
 Set `SITE_PASSWORD` in `.env.local` before opening [http://localhost:3000](http://localhost:3000). The auth flow fails closed when the variable is missing or blank.
 
-The page expects the official wordmark at `public/brand/hrblock-wordmark.svg`. It also expects the supplied H&R Block watercolor files under `public/brand/`.
+The lockup loads the official horizontal wordmark from H&R Block's first-party investor site. The H&R Block watercolor files are stored under `public/brand/`.
 
 ## Checks
 

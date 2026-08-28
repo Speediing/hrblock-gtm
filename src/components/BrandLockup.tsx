@@ -11,9 +11,10 @@ export function BrandLockup({
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/brand/hrblock-wordmark.svg"
+        src="https://investors.hrblock.com/static-files/20287f6d-cfbe-4374-b7fc-cf39c88d855e"
         alt="H&R Block"
         className="brand-customer"
+        referrerPolicy="no-referrer"
       />
       <span className="brand-times" aria-hidden>
         ×
