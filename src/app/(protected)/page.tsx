@@ -6,8 +6,11 @@ import { QuoteWall } from "@/components/QuoteWall";
 import { RosterChart } from "@/components/RosterChart";
 import { SiteNav } from "@/components/SiteNav";
 import { JOBS } from "@/data/jobs";
+import { requireSiteAccess } from "@/lib/gate";
 
-export default function HomePage() {
+export default async function HomePage() {
+  await requireSiteAccess("/");
+
   return (
     <main id="top">
       <div className="hero-watercolor">
