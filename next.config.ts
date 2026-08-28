@@ -1,17 +1,30 @@
 import type { NextConfig } from "next";
 
-const robotsHeader = {
-  key: "X-Robots-Tag",
-  value: "noindex, nofollow, noarchive",
-} as const;
-
 const nextConfig: NextConfig = {
-  poweredByHeader: false,
+  devIndicators: false,
+  transpilePackages: ["vgpu", "@vgpu/core", "@vgpu/wgsl"],
+  turbopack: {
+    rules: {
+      "*.wgsl": {
+        loaders: ["@vgpu/wgsl/loader-webpack"],
+        as: "*.js",
+      },
+    },
+  },
+  webpack(config) {
+    config.module ??= {};
+    config.module.rules ??= [];
+    config.module.rules.push({
+      test: /\.wgsl$/,
+      loader: "@vgpu/wgsl/loader-webpack",
+    });
+    return config;
+  },
   async headers() {
     return [
       {
         source: "/:path*",
-        headers: [robotsHeader],
+        headers: [{ key: "x-vercel-skip-toolbar", value: "1" }],
       },
     ];
   },

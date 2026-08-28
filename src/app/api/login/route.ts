@@ -1,74 +1,49 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { AUTH_COOKIE, passwordMatches, sessionToken } from "@/lib/auth";
 
-import {
-  ACCESS_COOKIE,
-  SiteNotConfiguredError,
-  createAccessToken,
-  getAccessCookieOptions,
-  verifySubmittedPassword,
-} from "@/lib/auth";
-import type { LoginResponse } from "@/lib/login";
-
-export type { LoginResponse } from "@/lib/login";
-
-export interface LoginRequest {
-  readonly password: string;
+function safeNext(value: string | null | undefined): string {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) {
+    return "/";
+  }
+  return value;
 }
 
-const NO_STORE = { "Cache-Control": "no-store" } as const;
+export async function POST(request: Request) {
+  const contentType = request.headers.get("content-type") || "";
+  let password = "";
+  let next = "/";
 
-export async function POST(
-  request: NextRequest,
-): Promise<NextResponse<LoginResponse>> {
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return fail("INVALID_REQUEST", 400);
+  if (contentType.includes("application/json")) {
+    const body = (await request.json()) as { password?: string; next?: string };
+    password = body.password || "";
+    next = safeNext(body.next);
+  } else {
+    const form = await request.formData();
+    password = String(form.get("password") || "");
+    next = safeNext(String(form.get("next") || "/"));
   }
 
-  const password = readPassword(body);
-  if (password == null) {
-    return fail("INVALID_REQUEST", 400);
-  }
-
-  try {
-    const matched = await verifySubmittedPassword(password);
-    if (!matched) {
-      return fail("INVALID_PASSWORD", 401);
+  if (!passwordMatches(password)) {
+    if (contentType.includes("application/json")) {
+      return NextResponse.json({ ok: false }, { status: 401 });
     }
-    const token = await createAccessToken();
-    const response = NextResponse.json<LoginResponse>(
-      { ok: true },
-      { status: 200, headers: NO_STORE },
-    );
-    response.cookies.set(ACCESS_COOKIE, token, getAccessCookieOptions());
-    return response;
-  } catch (error) {
-    if (error instanceof SiteNotConfiguredError) {
-      return fail("SITE_NOT_CONFIGURED", 503);
-    }
-    return fail("SITE_NOT_CONFIGURED", 503);
+    const err = new URL("/login", request.url);
+    err.searchParams.set("error", "1");
+    if (next !== "/") err.searchParams.set("next", next);
+    return NextResponse.redirect(err, { status: 303 });
   }
-}
 
-function readPassword(body: unknown): string | null {
-  if (body == null || typeof body !== "object" || Array.isArray(body)) {
-    return null;
-  }
-  const password = (body as { password?: unknown }).password;
-  if (typeof password !== "string" || password.length === 0) {
-    return null;
-  }
-  return password;
-}
+  const response = contentType.includes("application/json")
+    ? NextResponse.json({ ok: true, next })
+    : NextResponse.redirect(new URL(next, request.url), { status: 303 });
 
-function fail(
-  code: Exclude<LoginResponse, { ok: true }>["code"],
-  status: 400 | 401 | 503,
-): NextResponse<LoginResponse> {
-  return NextResponse.json<LoginResponse>(
-    { ok: false, code },
-    { status, headers: NO_STORE },
-  );
+  response.cookies.set(AUTH_COOKIE, await sessionToken(), {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  });
+
+  return response;
 }

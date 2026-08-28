@@ -1,49 +1,31 @@
-# H&R Block x SpaceXAI
+# Grok Bot for Datadog GTM
 
-Private, passworded visual leave-behind for evaluating agent-assisted software work with H&R Block. The slug is `hrblock`.
+Passworded site. Grok Bot from SpaceXAI, for Datadog GTM.
 
-The protected page presents Grok Bot as a fleet of software agents with their own computers. It includes an interactive six-agent selector, three illustrative scene sequences, a six-computer fleet view, and a grounded evaluation section. Every scene ends with a reviewable artifact instead of a claimed customer result.
+## What it is
 
-## Local setup
+Three GTM jobs on one page. Each job has a short problem statement, an interactive Grok Bot demo, and the matching Krista Letz clips under that demo. Below that: a light index of the clips and the public Grok Bot quote wall.
 
-1. Use Node 22 or newer.
-2. Install dependencies:
+## Run locally
 
 ```bash
+cp .env.example .env.local
 npm install
-```
-
-3. Copy `.env.example` to `.env.local`.
-4. Set `SITE_PASSWORD` in `.env.local` to a password you choose. Do not commit that file. Do not prefix the variable with `NEXT_PUBLIC_`.
-5. Start the app:
-
-```bash
 npm run dev
 ```
 
-6. Open `http://localhost:3000`, enter the password, and the root page will load.
+Open [http://localhost:3000](http://localhost:3000). Default password is `land2expand` (override with `SITE_PASSWORD`).
 
-The login cookie is HttpOnly, `SameSite=Lax`, `Path=/`, and lasts 7 days. In production it is also `Secure`. The cookie stores a derived token, never the raw password.
+## Krista clips
 
-## Required environment
-
-| Name | Where | Purpose |
-| --- | --- | --- |
-| `SITE_PASSWORD` | server only | Shared site password. If it is missing or empty, login returns 503 and the root page stays locked. |
-
-## Checks
+Download into `private/media/krista-clips/` from the GitHub release (served only through the passworded `/api/media/...` route):
 
 ```bash
-npm run lint
-npm run typecheck
-npm test
-npm run scan:residue
-npm run scan:emdash
-npm run build
+gh release download krista-gtm-clips-720p-2026-08-26 \
+  --repo Speediing/grok-bot-quotes \
+  --dir private/media/krista-clips
 ```
 
-`scan:residue` looks for prior-customer names and inherited color tokens in source. `scan:emdash` checks customer-facing source for em dashes. Neither scan reads `.next/` or lockfiles.
+## Deploy
 
-## Wordmark
-
-The official H&R Block horizontal wordmark could not be downloaded from `hrblock.com` in the environment that built this page. See `public/brand/MISSING_OFFICIAL_WORDMARK.md`. The SpaceXAI wordmark is local at `public/brand/spacexai.svg`.
+Preview only under the `jasonwiker` Vercel team, project name `datadog-cro`. Set `SITE_PASSWORD=land2expand`. Do not promote to a public production domain until Jason says so.
