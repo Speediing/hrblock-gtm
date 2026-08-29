@@ -16,7 +16,7 @@ export function SiteNav() {
         <a className="text-button" href="#compare">
           Compare
         </a>
-        <a className="text-button" href="#testimonials">
+        <a className="text-button nav-optional" href="#testimonials">
           Sources
         </a>
       </nav>

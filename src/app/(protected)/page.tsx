@@ -1,5 +1,6 @@
 import { BrandLockup } from "@/components/BrandLockup";
 import { CompareTable } from "@/components/CompareTable";
+import { HeroDemo } from "@/components/HeroDemo";
 import { HeroTelemetry } from "@/components/HeroTelemetry";
 import { JobSection } from "@/components/JobSection";
 import { QuoteWall } from "@/components/QuoteWall";
@@ -26,20 +27,7 @@ export default async function HomePage() {
       <div className="report">
         <div className="report-hero">
           <HeroTelemetry />
-          <section className="hero">
-            <div>
-              <p className="eyebrow">
-                An illustrative software fleet for H&amp;R Block
-              </p>
-              <h1>Software agents with their own computers.</h1>
-              <p className="hero-intro">
-                These workflows start from the current evaluation context.
-                Most engineering work is in Azure DevOps today. Four to five
-                repositories are already in GitHub, with broader adoption
-                planned by year end.
-              </p>
-            </div>
-          </section>
+          <HeroDemo />
 
           <RosterChart />
 
